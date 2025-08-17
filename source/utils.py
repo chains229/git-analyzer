@@ -45,3 +45,18 @@ def save_output(output: str, output_dir: str, commit_hash: str, command: str):
     with open(file_path, "w") as f:
         f.write(output)
     print(f"Output saved to {file_path}")
+
+def get_latest_commit_hash() -> str:
+    """
+    Retrieves the hash of the latest commit in the repository.
+
+    Returns:
+        The latest commit hash as a string.
+    """
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            encoding="utf-8"
+        ).strip()
+    except subprocess.CalledProcessError as e:
+        raise ValueError("Could not get the latest commit hash. It looks like you're not in a git repository?") from e

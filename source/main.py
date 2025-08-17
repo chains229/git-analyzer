@@ -4,7 +4,7 @@ from crewai import Crew, Task
 
 from source.agents.summary_agent import create_summary_agent
 from source.agents.analyze_agent import create_analyze_agent
-from source.utils import get_commit_details, save_output
+from source.utils import get_commit_details, save_output, get_latest_commit_hash
 
 load_dotenv()
 
@@ -15,7 +15,7 @@ def main():
         choices=["summary", "analyze"],
         help="The main command to run (summary or analyze). Defaults to summary."
     )
-    parser.add_argument("--commit", required=True, help="The git commit hash to analyze.")
+    parser.add_argument("--commit", help="The git commit hash to analyze. If not provided, the latest commit will be used.")
     parser.add_argument(
         "--model",
         default="azure/gpt-4.1",
@@ -28,8 +28,17 @@ def main():
 
     args = parser.parse_args()
 
+    commit_hash = args.commit
+    if not commit_hash:
+        try:
+            commit_hash = get_latest_commit_hash()
+            print(f"No commit hash provided. Using the latest commit: {commit_hash}")
+        except ValueError as e:
+            print(e)
+            return
+
     try:
-        metadata, diff = get_commit_details(args.commit)
+        metadata, diff = get_commit_details(commit_hash)
     except ValueError as e:
         print(e)
         return
@@ -59,13 +68,9 @@ def main():
 
     result = crew.kickoff()
 
-    print("\n" + "="*50)
-    print("      Git Commit Analysis Result")
-    print("="*50 + "\n")
-    print(result)
 
     if args.output_dir:
-        save_output(result, args.output_dir, args.commit, args.main_command)
+        save_output(result, args.output_dir, commit_hash, args.main_command)
 
 if __name__ == "__main__":
     main()
