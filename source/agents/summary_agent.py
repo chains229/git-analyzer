@@ -14,5 +14,5 @@ def create_summary_agent(llm):
         prompt=SUMMARY_PROMPT,
         llm=llm,
         tools=[GetFileContentTool(), SearchRiskInfoTool()],
-        verbose=True,
+        verbose=False,
     )

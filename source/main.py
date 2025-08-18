@@ -68,6 +68,10 @@ def main():
 
     result = crew.kickoff()
 
+    print("\n" + "="*50)
+    print("      Git Commit Analysis Result")
+    print("="*50 + "\n")
+    print(result)
 
     if args.output_dir:
         save_output(result, args.output_dir, commit_hash, args.main_command)

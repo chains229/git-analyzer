@@ -14,5 +14,5 @@ def create_analyze_agent(llm):
         prompt=ANALYSIS_PROMPT,
         llm=llm,
         tools=[GetFileContentTool(), SearchRiskInfoTool()],
-        verbose=True,
+        verbose=False,
     )
