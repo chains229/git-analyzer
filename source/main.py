@@ -2,9 +2,10 @@ import argparse
 from dotenv import load_dotenv
 from crewai import Crew, Task
 
+from source.agents.review_agent import create_review_agent
 from source.agents.summary_agent import create_summary_agent
 from source.agents.analyze_agent import create_analyze_agent
-from source.utils import get_commit_details, save_output, get_latest_commit_hash
+from source.utils import get_commit_details, save_output, get_latest_commit_hash, get_uncommitted_diff
 
 load_dotenv()
 
@@ -12,14 +13,15 @@ def main():
     parser = argparse.ArgumentParser(description="Analyzes git commits using AI agents.")
     parser.add_argument(
         "main_command",
-        choices=["summary", "analyze"],
-        help="The main command to run (summary or analyze). Defaults to summary."
+        choices=["summary", "analyze", "review"],
+        help="The main command to run (summary, analyze a commit or review uncommitted changes). Defaults to summary."
     )
     parser.add_argument("--commit", help="The git commit hash to analyze. If not provided, the latest commit will be used.")
+
     parser.add_argument(
         "--model",
-        default="azure/gpt-4.1",
-        help="The LLM model to use. Defaults to gpt-4.1"
+        default="gemini/gemini-2.5-flash",
+        help="The LLM model to use. Defaults to gemini/gemini-2.5-flash. For a list of supported models, visit: https://docs.litellm.ai/docs/providers"
     )
     parser.add_argument(
         "--output-dir",
@@ -58,6 +60,14 @@ def main():
             description=f"Analyze the following git commit for security and performance risks:\n\nMetadata:\n{metadata}\n\nDiff:\n{diff}",
             agent=agent,
             expected_output="A detailed analysis of security and performance risks, if any, with mitigation suggestions."
+        )
+    elif args.main_command == "review":
+        agent = create_review_agent(llm)
+        uncommitted_diff = get_uncommitted_diff()
+        task = Task(
+            description=f"Review the following uncommitted changes for security and performance risks:\n\nDiff:\n{uncommitted_diff}",
+            agent=agent,
+            expected_output="A detailed review of security and performance risks, if any, with mitigation suggestions."
         )
 
     crew = Crew(

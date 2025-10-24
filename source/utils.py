@@ -60,3 +60,17 @@ def get_latest_commit_hash() -> str:
         ).strip()
     except subprocess.CalledProcessError as e:
         raise ValueError("Could not get the latest commit hash. It looks like you're not in a git repository?") from e
+
+def get_uncommitted_diff(repo_path="."):
+    """Return the git diff of uncommitted changes."""
+    try:
+        result = subprocess.check_output(
+            ["git", "-C", repo_path, "diff"],
+            encoding="utf-8"
+        )
+        diff = result.strip()
+        if not diff:
+            raise ValueError("No uncommitted changes found.")
+        return diff
+    except subprocess.CalledProcessError as e:
+        raise ValueError("Could not get uncommitted changes. Is this a valid git repository?") from e

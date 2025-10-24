@@ -41,17 +41,17 @@ source .venv/bin/activate  # On Linux/macOS
 .\.venv\Scripts\activate   # On Windows
 ```
 Then, `cd` to the repo that contains the commit you want to analyze (i know it sucks). 
-The main command to run the analyzer is `git-analyzer`.
+The main command to run the analyzer is `ga`.
 
 - To summary a commit:
 
 ```shell
-git-analyzer summary --commit <your-commit-id>
+ga summary --commit <your-commit-id>
 ```
 
 - To analyze performance/security risk of a commit:
 ```shell
-git-analyzer summary --commit <your-commit-id>
+ga summary --commit <your-commit-id>
 ```
 
 ### Optional argument

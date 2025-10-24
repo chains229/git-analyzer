@@ -1,5 +1,5 @@
 [project]
-name = "git-analyzer"
+name = "ga"
 version = "0.1.0"
 description = "A CLI tool to analyze git commits for security and performance risks using AI agents."
 authors = [
@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
-git-analyzer = "source.main:main"
+ga = "source.main:main"
 
 [build-system]
 requires = ["setuptools>=61.0"]

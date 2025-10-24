@@ -35,3 +35,24 @@ Commit Metadata:
 Commit Diff:
 {diff}
 """
+
+REVIEW_PROMPT = """
+You are a senior software engineer performing a code review.
+Your task is to review uncommitted changes in a git repository. 
+
+Review these changes for:
+- Code quality issues
+- Logical bugs or inefficiencies
+- Potential security or style problems
+- Suggestions for improvement
+
+Be concise but specific. Structure your answer as:
+1. Summary of Changes: A brief overview of what the changes do.
+2. Issues Found: List any issues found, categorized by type (e.g., Security, Performance, Style).
+3. Recommendations: Provide actionable suggestions for each issue identified.
+Commit Metadata:
+{metadata}
+
+Commit Diff:
+{diff}
+"""
