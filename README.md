@@ -6,6 +6,7 @@ A simple command-line interface (CLI) tool that leverages AI agents to analyze G
 
 - **Commit Summarization**: Provides a concise summary of the changes in a given commit.
 - **Risk Analysis**: Identifies potential security vulnerabilities and performance bottlenecks introduced in a commit.
+- **Code Review**: Summaries and identifies potential vulnerabilities in repo diff before committing.
 - **Extensible LLM Support**: Easily configure different Language Model (LLM) providers through CrewAI.
 - **File Content Retrieval**: Agents can fetch the full content of a file for more in-depth analysis.
 - **External Information Search**: Agents can search for information about identified risks and provide relevant links.
@@ -52,6 +53,11 @@ ga summary --commit <your-commit-id>
 - To analyze performance/security risk of a commit:
 ```shell
 ga summary --commit <your-commit-id>
+```
+
+- To review uncommitted code:
+```shell
+ga review
 ```
 
 ### Optional argument
